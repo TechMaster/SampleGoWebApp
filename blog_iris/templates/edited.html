@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-size: 18px;
+            background-color: #e9eaea;
+            font-family: monospace;
+        }
+
+        a:visited {
+            color: black;
+        }
+
+        img {
+            max-height: 230px;
+            max-width: 317px;
+        }
+        .image {
+            border: 1px solid #3333339c;
+            max-height: 230px;
+            overflow: hidden;
+            width: 322px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .bootstrap-iso {
+            background-color: #e9eaea;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/post">/All Posts</a>
+    <h2>Edited</h2>
+    <br>
+    <div class="image">
+        <img src="{{.Image}}" alt="Image Link Address">
+    </div>
+
+    <p><b>Title: {{.Title}}</b></p>
+    <p>--------------------------</p>
+    <p>Alias: {{.Alias}} </p>
+    <p>Published: {{.Published}}<p>
+    <p>Intro_text: {{.Intro_text}}</p>
+    <p>Full_text: {{.Full_text}}</p>
+    <p>--------------------------</p>
+    <p>Create_by: </p>
+    <p>Create_at: {{.Created_at}}</p>
+</body>
+
+</html>
