@@ -45,9 +45,10 @@ func Edit(db *pg.DB, idpost int16) (data Post) {
 	_ = db.Select(&data)
 	return data
 }
-func Insertdata(db *pg.DB, title, alias, intro_text, full_text, image string, published string, created_at string) (data Post) {
+func Insertdata(db *pg.DB, title, alias, intro_text, full_text, image string, published string, category []string, created_at string) (data Post) {
+	fmt.Println(category)
 	data = Post{Title: title, Alias: alias, Intro_text: intro_text,
-		Full_text: full_text, Image: image, Published: published, Created_at: created_at}
+		Full_text: full_text, Image: image, Published: published, Categories: category,  Created_at: created_at}
 	err := db.Insert(&data)
 	if err != nil {
 		panic(err)
@@ -61,9 +62,9 @@ func Deletedata(db *pg.DB, id int16){
 		panic(err)
 	}
 }
-func Update(db *pg.DB, title, alias, intro_text, full_text, image string, published string, created_at string, id int16) (data Post) {
+func Update(db *pg.DB, title, alias, intro_text, full_text, image string, published string, category []string, created_at string, id int16) (data Post) {
 	_, _ = db.Model(&data).
-	Set("title = ?, alias = ?, intro_text = ?, full_text = ? , image = ?, published = ?", title, alias, intro_text, full_text, image, published).
+	Set("title = ?, alias = ?, intro_text = ?, full_text = ? , image = ?, category = ?,  published = ?", title, alias, intro_text, full_text, image, category, published).
 	Where("id = ?", id).Update()
 
 	return data

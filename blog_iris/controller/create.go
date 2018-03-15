@@ -31,7 +31,8 @@ func CreatedPost(ctx iris.Context) {
 	ctx.ViewData("Published", post.Published)
 	ctx.ViewData("Intro_text", post.Intro_text)
 	ctx.ViewData("Full_text", post.Full_text)
+	ctx.ViewData("Categories", post.Categories) 
 	ctx.View("created.html")
-	model.Insertdata(db, post.Title, post.Alias, post.Intro_text, post.Full_text, post.Image, post.Published, t1)
+	model.Insertdata(db, post.Title, post.Alias, post.Intro_text, post.Full_text, post.Image, post.Published, post.Categories, t1)
 
 }
