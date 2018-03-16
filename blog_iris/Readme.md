@@ -15,8 +15,8 @@
 ## Install
 
 
-create table posts with this form
-
+# create table posts with this form
+    
     create table posts (
         id serial primary key not null,
         title text,
@@ -26,7 +26,7 @@ create table posts with this form
         image text,
         published text,
         published_at timestamptz,
-        categories text null,
+        categories jsonb,
         type text null,
         created_at timestamptz,
         created_by text null,
@@ -35,7 +35,18 @@ create table posts with this form
         author_visible text null
     );
 
+### then
+    drop table categories;
+    create table categories (
+    id serial primary key not null,
+    count int,
+	name text,
+	alias text,
+	type text,
+	description text
+    );
+    insert into categories (name) values ('linux'), ('react'), ('microservice'), ('html'), ('php'), ('java'), ('docker');
 
-and run command
+### and run command
 
     go run main.go

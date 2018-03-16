@@ -28,6 +28,7 @@
     .asteriskField {
       color: red;
     }
+
     .bootstrap-iso .btn-success {
       color: #ffffff;
       background-color: #337ab7;
@@ -97,11 +98,14 @@
                   Published
                 </label>
                 <select class="select form-control" id="Published" name="Published">
+                  <option value="{{.Published}}">
+                      {{.Published}}
+                  </option>
                   <option value="publish">
-                    Publish
+                    publish
                   </option>
                   <option value="draft">
-                    Draft
+                    draft
                   </option>
                 </select>
               </div>
@@ -113,12 +117,14 @@
                   Category
                 </label>
                 <!-- <select class="select form-control" id="Published" name="Published"> -->
-                  <select class="js-example-basic-multiple select form-control" id="Categories" value="{{.Categories}}" name="Categories" multiple="multiple">
-                    <option value="docker">Docker</option>
-                    <option value="microservice">Microservice</option>
-                    <option value="linux">Linux</option>
-                    <option value="html">Html</option>
-                    <option value="react">React</option>
+                <select class="js-example-basic-multiple select form-control" id="Categories" value="{{.Categories}}" name="Categories" multiple="multiple">
+                  <option value="docker">Docker</option>
+                  <option value="microservice">Microservice</option>
+                  <option value="linux">Linux</option>
+                  <option value="html">Html</option>
+                  <option value="react">React</option>
+                  <option value="php">Php</option>
+                  <option value="java">Java</option>
                 </select>
               </div>
             </div>
@@ -163,18 +169,15 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"
   />
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $('.js-example-basic-multiple').select2();
-});
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('.js-example-basic-multiple').select2();
+    });
 
-</script>
+  </script>
   <script>
     $(document).ready(function () {
       var date_input = $('input[name="date"]'); //our date input has the name "date"

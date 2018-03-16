@@ -22,7 +22,7 @@ func DeletePost(ctx iris.Context) {
 	id := int16(i)
 	data := model.Getbyid(db, id)
 	for _, values := range data.Categories {
-		_, count := model.Get(db, values)
+		_, count := model.GetCount(db, values)
 		count = count - 1
 		model.Updatecategory(db, count, values)
 	}

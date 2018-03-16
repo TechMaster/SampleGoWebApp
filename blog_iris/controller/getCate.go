@@ -7,7 +7,6 @@ import (
 ) 
 
 func GetCate(ctx iris.Context) {
-	data := model.Getcategory(db)
+	data := model.GetNumberPostsbyCate(db)
 	ctx.View("category.html", data)
-	fmt.Println(data)
 }

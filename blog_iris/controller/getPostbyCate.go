@@ -1,22 +1,16 @@
 package controller
 
 import (
-	"fmt"
 	"../models"
 	"github.com/kataras/iris"
 ) 
 func GetPostbyCate(ctx iris.Context) {
 	url := ctx.Params().Get("category")
-	data := model.Getcolumncategories(db)
-	// for _, x:= range data {
-	// 	fmt.Println (x) 
-	// }
-	data2 := model.GetbyCate(db ,url)
-
-	fmt.Println ("-------------------------------------------")
-	fmt.Println (url)
-	fmt.Println ("-------")
-	fmt.Println (data)
-	fmt.Println ("---")
-	fmt.Println (data2)
-} 
+	data := model.Getbycategory(db, url)
+	for i ,x:= range data {
+		if len(x.Categories) > 0 {
+			data[i].Categories = data[i].Categories[:1]
+		}
+	}
+	ctx.View("preview.html", data)
+}

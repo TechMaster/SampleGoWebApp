@@ -1,7 +1,7 @@
 package model
 
 import (
-	"fmt"
+	"fmt" 
 
 	"github.com/go-pg/pg"
 )
@@ -62,17 +62,21 @@ func Deletedata(db *pg.DB, id int16){
 		panic(err)
 	}
 }
-func Update(db *pg.DB, title, alias, intro_text, full_text, image string, published string, category []string, created_at string, id int16) (data Post) {
-	_, _ = db.Model(&data).
-	Set("title = ?, alias = ?, intro_text = ?, full_text = ? , image = ?, category = ?,  published = ?", title, alias, intro_text, full_text, image, category, published).
+func Update(db *pg.DB, title, alias, intro_text, full_text, image string, published string, category []string, created_at string, id int16){
+	var post Post
+	_, _ = db.Model(&post).
+	Set("title = ?, alias = ?, intro_text = ?, full_text = ? , image = ?,  published = ?, categories = ?", title, alias, intro_text, full_text, image,  published, category).
 	Where("id = ?", id).Update()
-
-	return data
+}
+func Updatename(db *pg.DB, name string, id int16){
+	var post Post
+	_, _ = db.Model(&post).
+	Set("title = ?", name).
+	Where("id = ?", id).Update()
 }
 
-
-func Getcolumncategories(db *pg.DB) (data []Post) {
-	_ = db.Model(&data).Column("categories").Select()
+func Getbycategory(db *pg.DB, cate string) (data []Post) {
+	_ = db.Model(&data).Where("categories ? '" +  cate + "'").Select()
 	fmt.Println(data)
 	return data
 }
