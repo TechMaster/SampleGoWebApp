@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-size: 18px;
+            background-color: #e9eaea;
+            font-family: monospace;
+        }
+
+        img {
+            max-height: 100%;
+        }
+
+        a:visited,
+        a:link {
+            color: black;
+        }
+
+        h1 {
+            color: red
+        }
+
+        #post {
+            margin: 0 auto;
+        }
+
+        #frame {
+          border: 1px solid slategrey;
+            border-radius: 3px;
+            padding: 5px;
+            overflow: auto;
+            float: left;
+            margin: 15px;
+        }
+        .type {
+            float: left;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .count {
+            margin-left: 15px;
+            padding: 5px;
+            box-sizing: border-box;
+            overflow: hidden;
+            float: left;
+        }
+
+    </style>
+</head>
+
+<body>
+    <a href="/post">/All Posts</a>
+    <br>
+    <a href="/create">/Create Posts</a>
+    <br>
+     {{range .}}
+     <a href="/post/category/{{.Name}}">
+        <div id="frame">
+                <div class="type">
+                    <span>{{.Name}}</span>
+                </div>
+                <div class="count">
+                    {{.Count}}
+                </div>
+              </div>
+        </a>
+        {{end}}
+
+
+</body>
+
+</html>

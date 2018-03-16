@@ -36,5 +36,5 @@ func Edited(ctx iris.Context) {
 	i, _ := strconv.Atoi(temp)
 	i1 := int16(i)
 	model.Update(db, post.Title, post.Alias, post.Intro_text, post.Full_text, post.Image, post.Published, post.Categories,  t1, i1)
-
+	
 }

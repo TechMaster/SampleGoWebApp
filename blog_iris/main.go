@@ -27,6 +27,9 @@ func main() {
 	app.Post("/post/edited/{id}", controller.Edited)
 	app.Get("/post/delete/{id}", controller.DeletePost)
 
+	app.Get("/post/category", controller.GetCate)
+	app.Get("/post/category/{category}", controller.GetPostbyCate)
+
 	app.Get("/api", controller.Api)
 	app.Get("/api/{id}", controller.ApiDetails)
 

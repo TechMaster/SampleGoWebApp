@@ -69,3 +69,10 @@ func Update(db *pg.DB, title, alias, intro_text, full_text, image string, publis
 
 	return data
 }
+
+
+func Getcolumncategories(db *pg.DB) (data []Post) {
+	_ = db.Model(&data).Column("categories").Select()
+	fmt.Println(data)
+	return data
+}

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	_"fmt"
 	"time"
 
 	"../models"
@@ -9,6 +10,7 @@ import (
 )
 
 var db *pg.DB
+var cate *pg.DB
 
 func CreatePost(ctx iris.Context) {
 	if err := ctx.View("create.html"); err != nil {
@@ -34,5 +36,9 @@ func CreatedPost(ctx iris.Context) {
 	ctx.ViewData("Categories", post.Categories) 
 	ctx.View("created.html")
 	model.Insertdata(db, post.Title, post.Alias, post.Intro_text, post.Full_text, post.Image, post.Published, post.Categories, t1)
-
+	for _, values := range post.Categories {
+		_, count := model.Get(db, values)
+		count = count + 1
+		model.Updatecategory(db, count, values)
+	}
 }
