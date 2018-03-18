@@ -1,19 +1,31 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-	_"encoding/json"
+	"strconv"
+
 	"github.com/kataras/iris"
 
+	_ "github.com/dgrijalva/jwt-go"
 	jwt "github.com/dgrijalva/jwt-go"
 	jwtreq "github.com/dgrijalva/jwt-go/request"
-	_"github.com/dgrijalva/jwt-go"
 	// jwtmiddleware "github.com/iris-contrib/middleware/jwt"
 )
 
+var superAdmin = User{
+	1,
+	"username",
+	"password",
+	UserProfile{Name: "myName", Permissions: []string{"super_Admin_Is_All"}},
+}
+
+//////////////////////
+
 // User thong tin user
 type User struct {
+	ID       int
 	Username string
 	Password string
 	Profile  UserProfile
@@ -33,14 +45,10 @@ type UserClaims struct {
 
 var signingKey = []byte("signing-key")
 
+var user []User
+
 func signingKeyFn(*jwt.Token) (interface{}, error) {
 	return signingKey, nil
-}
-
-var sampleUser = User{
-	"username",
-	"password",
-	UserProfile{Name: "myName", Permissions: []string{"Admin"}},
 }
 
 func main() {
@@ -50,11 +58,11 @@ func main() {
 
 	app.Get("/auth", auth)
 
+	app.Post("/create/{id}", create)
+
 	app.Run(iris.Addr(":8080"))
 
 }
-
-
 
 func login(ctx iris.Context) {
 	var user User
@@ -68,9 +76,21 @@ func login(ctx iris.Context) {
 	username := user.Username
 	password := user.Password
 
-	if username == sampleUser.Username && password == sampleUser.Password {
+	temp := 0
+
+	for _, x := range user {
+		if username == x.Username && password == x.Password {
+			temp = 1
+		}
+	}
+
+	if username == superAdmin.Username && password == superAdmin.Password {
+		temp = 1
+	}
+
+	if temp == 1 {
 		claims := UserClaims{
-			sampleUser.Profile,
+			superAdmin.Profile,
 			jwt.StandardClaims{
 				Issuer: "test-project",
 			},
@@ -94,11 +114,11 @@ func login(ctx iris.Context) {
 	return
 }
 
-func auth(ctx iris.Context, ) {
+func auth(ctx iris.Context) {
 	x := ctx.Request()
 	var claims UserClaims
 	token, err := jwtreq.ParseFromRequestWithClaims(x, jwtreq.AuthorizationHeaderExtractor, &claims, signingKeyFn)
-	
+
 	if err != nil {
 		log.Println("Failed to parse token")
 		return
@@ -112,4 +132,23 @@ func auth(ctx iris.Context, ) {
 	claimsString := fmt.Sprintf("claims: %v", claims)
 	ctx.Write([]byte(claimsString))
 	log.Println(claimsString)
+}
+
+func create(ctx iris.Context) {
+	var newuser User
+	ID := ctx.Params().Get("id")
+
+	err := ctx.ReadJSON(&newuser)
+	if err != nil {
+		ctx.StatusCode(iris.StatusBadRequest)
+		ctx.WriteString(err.Error())
+		return
+	}
+
+	newuser.ID, _ = strconv.Atoi(ID)
+	x := ctx.Request()
+	y := ctx.ResponseWriter()
+	_ = json.NewDecoder(x.Body).Decode(&user)
+	user = append(user, newuser)
+	json.NewEncoder(y).Encode(newuser)
 }
