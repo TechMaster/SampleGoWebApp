@@ -65,10 +65,12 @@ func main() {
 
 	user = append (user, superAdmin)
 	user = append (user, user01)
+	
+	app.UseGlobal(verifyToken)
 
 	app.Post("/user/login", login)
 
-	app.Get("/user/verify", verify)
+	app.Get("/user/verify", verifyToken)
 
 	app.Post("/user/register", register)
 
@@ -79,7 +81,26 @@ func main() {
 	app.Run(iris.Addr(":8080"))
 
 }
+func verifyToken(ctx iris.Context) {
+	x := ctx.Request()
+	var claims UserClaims
+	token, err := jwtreq.ParseFromRequestWithClaims(x, jwtreq.AuthorizationHeaderExtractor, &claims, signingKeyFn)
 
+	if err != nil {
+		log.Println("Failed to parse token")
+		ctx.StatusCode(iris.StatusBadRequest)
+		ctx.WriteString(err.Error())	
+		return
+	}
+
+	if !token.Valid {
+		log.Println("Invalid token")
+		ctx.StatusCode(iris.StatusUnauthorized)
+		ctx.WriteString(err.Error())
+		return
+	}
+	ctx.Next()
+}
 func login(ctx iris.Context) {
 	var userlogin User
 	err := ctx.ReadJSON(&userlogin)
