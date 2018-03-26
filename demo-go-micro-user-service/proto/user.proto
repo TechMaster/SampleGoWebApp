@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package user;
+import "google/protobuf/any.proto";
+
+service auth {
+  /* Member User */
+  rpc RegisterUser(RegisterUserRequest) returns (StatusResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  
+  rpc CreateUser(CreateUserRequest) returns (StatusResponse);
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (StatusResponse);
+}
+
+/* Kết quả trả về */
+message StatusResponse {
+  // Mã trạng thái trả về
+  int32 code = 1;
+
+  // Thông báo lỗi chung
+  string message = 2;
+
+  // Danh sách chi tiết các lỗi (Exception)
+  repeated google.protobuf.Any details = 3;
+}
+
+message User {
+  // Mã User (chuỗi ngẫu nhiên duy nhất)
+  string id = 1;
+
+  // Tên User
+  string first_name = 2;
+  
+  // Họ User
+  string last_name = 3;
+
+  // Địa chỉ email, dùng luôn làm tài khoản đăng nhập
+  string email = 4;
+
+  // Mật khẩu phải có tối thiểu 6 ký tự
+  string password = 5;
+
+  // Salt dùng để mã hóa password
+  string salt = 6;
+
+  // Số điện thoại
+  string phone = 7;
+
+  // Ảnh đại diện
+  string avatar = 8;
+
+}
+
+message CreateUserRequest {
+  // Tạo đối tượng User
+  User user = 1;
+}
+
+message GetUserByIdRequest {
+  // Id của User
+  string id = 1;
+}
+
+message GetUserByIdResponse {
+  // Trả về đối tượng User
+  User user = 1;
+}
+
+
+message DeleteUserRequest {
+  // Id của User
+  string id = 1;
+}
+message RegisterUserRequest {
+  string email = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string password = 4;
+}
+
+
+message LoginRequest {
+  // Email
+  string email = 1;
+
+  // Mật khẩu
+  string password = 2;
+
+  // Ghi nhớ đăng nhập
+  bool remember = 3;
+}
+
+message LoginResponse {
+  // Trạng thái đăng nhập
+  // StatusResponse status = 1;
+
+  // JWT token dùng để chứng thực khi đăng nhập thành công
+  string access_token = 2;
+
+  // JWT token dùng để lưu thông tin User khi đăng nhập thành công
+  string id_token = 3;
+}
+
+message Empty {
+}

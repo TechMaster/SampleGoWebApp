@@ -10,7 +10,7 @@ import (
 	"github.com/kataras/iris"
 	uuid "github.com/satori/go.uuid"
 
-	_ "github.com/dgrijalva/jwt-go"
+	_ "github.com/dgrijalva/jwt-go" 
 	jwt "github.com/dgrijalva/jwt-go"
 	jwtreq "github.com/dgrijalva/jwt-go/request"
 	// jwtmiddleware "github.com/iris-contrib/middleware/jwt"
