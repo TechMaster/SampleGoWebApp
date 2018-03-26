@@ -1,16 +1,9 @@
 syntax = "proto3";
 
-package user;
-import "google/protobuf/any.proto";
 
-service auth {
-  /* Member User */
-  rpc RegisterUser(RegisterUserRequest) returns (StatusResponse);
-  rpc Login(LoginRequest) returns (LoginResponse);
-  
-  rpc CreateUser(CreateUserRequest) returns (StatusResponse);
-  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
-  rpc DeleteUser(DeleteUserRequest) returns (StatusResponse);
+service Userservice {
+  rpc Login(LoginRequest) returns (LoginResponse){}
+  rpc CreateUser(CreateUserRequest) returns (StatusResponse){}
 }
 
 /* Kết quả trả về */
@@ -20,9 +13,6 @@ message StatusResponse {
 
   // Thông báo lỗi chung
   string message = 2;
-
-  // Danh sách chi tiết các lỗi (Exception)
-  repeated google.protobuf.Any details = 3;
 }
 
 message User {
@@ -57,28 +47,6 @@ message CreateUserRequest {
   User user = 1;
 }
 
-message GetUserByIdRequest {
-  // Id của User
-  string id = 1;
-}
-
-message GetUserByIdResponse {
-  // Trả về đối tượng User
-  User user = 1;
-}
-
-
-message DeleteUserRequest {
-  // Id của User
-  string id = 1;
-}
-message RegisterUserRequest {
-  string email = 1;
-  string firstName = 2;
-  string lastName = 3;
-  string password = 4;
-}
-
 
 message LoginRequest {
   // Email
@@ -92,14 +60,9 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  // Trạng thái đăng nhập
-  // StatusResponse status = 1;
+  string email = 1;
 
-  // JWT token dùng để chứng thực khi đăng nhập thành công
-  string access_token = 2;
-
-  // JWT token dùng để lưu thông tin User khi đăng nhập thành công
-  string id_token = 3;
+  string password = 2;
 }
 
 message Empty {
