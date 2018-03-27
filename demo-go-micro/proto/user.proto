@@ -1,0 +1,33 @@
+syntax = "proto3";
+package proto;
+
+service Userservice {
+  rpc Hello(HelloRequest) returns (HelloResponse) {}
+  rpc CreateUser(CreateUserRequest) returns (StatusResponse){}
+}
+message HelloRequest {
+	string name = 1;
+}
+
+message HelloResponse {
+	string greeting = 2;
+}
+
+message StatusResponse {
+  int32 code = 1;
+  string message = 2;
+}
+message CreateUserRequest {
+  User user = 1;
+}
+message User {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string password = 5;
+
+}
+
+message Empty {
+}
