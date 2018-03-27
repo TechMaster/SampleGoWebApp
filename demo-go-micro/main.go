@@ -12,6 +12,7 @@ import (
 	"github.com/go-pg/pg/orm"
 	_ "github.com/lib/pq"
 	_"golang.org/x/crypto/openpgp/packet"
+	"github.com/satori/go.uuid"
 )
 type db struct {
 	DB *pg.DB
@@ -29,9 +30,10 @@ type Userservice struct{}
 // CreateUser from user.pb.go
 func (e *Userservice) CreateUser(ctx context.Context, req *proto.CreateUserRequest, rsp *proto.StatusResponse, ) error {
 	log.Printf("Received request")
-	
+
 	var db *pg.DB
-	x := proto.User{Id: "123", FirstName: "123"}
+	id := uuid.Must(uuid.NewV4())
+	x := proto.User{Id: id.String(), FirstName: "123"}
 	err := db.Insert(&x)
 	if err != nil {
 		panic(err)
