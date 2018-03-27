@@ -5,7 +5,7 @@ import (
 	"log"
 	"fmt"
 
-	proto "github.com/SampleGoWebApp/demo-go-micro-user-service/proto"
+	proto "github.com/SampleGoWebApp/demo-go-micro/proto"
 	"github.com/micro/go-micro"
 	_"github.com/micro/go-micro/cmd"
 	pg "github.com/go-pg/pg"
@@ -68,8 +68,15 @@ func main() {
 		fmt.Println("Connected Database")
 		Createtable(db)
 	}
+	// cùng 1 đoạn code, trên main vẫn có thể Insert vào Database
+	id := uuid.Must(uuid.NewV4())
+	x := proto.User{Id: id.String(), FirstName: "123"}
+	err = db.Insert(&x)
+	if err != nil {
+		panic(err)
+	}
 
-	// new service 
+	// new service ----------------------------------------------
 	service := micro.NewService(
 		micro.Name("newservice"),
 	)
