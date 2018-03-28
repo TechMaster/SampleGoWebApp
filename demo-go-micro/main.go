@@ -1,19 +1,20 @@
 package main
 
-import ( 
+import (
 	"context"
-	"log"
 	"fmt"
+	"log"
 
-	proto "github.com/SampleGoWebApp/demo-go-micro/proto"
-	"github.com/micro/go-micro"
-	_"github.com/micro/go-micro/cmd"
+	proto "./proto"
 	pg "github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	_ "github.com/lib/pq"
-	_"golang.org/x/crypto/openpgp/packet"
+	"github.com/micro/go-micro"
+	_ "github.com/micro/go-micro/cmd"
 	"github.com/satori/go.uuid"
+	_ "golang.org/x/crypto/openpgp/packet"
 )
+
 type db struct {
 	DB *pg.DB
 }
@@ -24,39 +25,21 @@ const (
 	dbPassword = "123"
 	dbUser     = "postgres"
 )
+
 // Userservice struct
 type Userservice struct{}
 
 // CreateUser from user.pb.go
-func (e *Userservice) CreateUser(ctx context.Context, req *proto.CreateUserRequest, rsp *proto.StatusResponse, ) error {
+func (e *Userservice) CreateUser(ctx context.Context, req *proto.CreateUserRequest, rsp *proto.StatusResponse) error {
 	log.Printf("Received request")
-
+	
 	var db *pg.DB
-	id := uuid.Must(uuid.NewV4())
-	x := proto.User{Id: id.String(), FirstName: "123"}
-	err := db.Insert(&x)
-	if err != nil {
-		panic(err)
-	}
-	rsp.Code = 200 // example
-	return nil
-}
-
-// Hello : test connect
-func (e *Userservice) Hello(ctx context.Context, req *proto.HelloRequest, rsp *proto.HelloResponse) error {
-	rsp.Greeting = "Hello " + req.Name
-	return nil
-}
-
-//=======================================================================================//
-func main() {
-	var db *pg.DB
-	// Ket noi toi database 
+	// Ket noi toi database
 	db = pg.Connect(&pg.Options{
 		User:     dbUser,
 		Password: dbPassword,
 		Database: dbName,
-		Addr:     dbHost, 
+		Addr:     dbHost,
 	})
 
 	var n int
@@ -70,11 +53,25 @@ func main() {
 	}
 	// cùng 1 đoạn code, trên main vẫn có thể Insert vào Database
 	id := uuid.Must(uuid.NewV4())
-	x := proto.User{Id: id.String(), FirstName: "123"}
+	x := proto.User{Id: id.String(), FirstName: "12345"}
 	err = db.Insert(&x)
 	if err != nil {
 		panic(err)
 	}
+
+	rsp.Code = 200 // example
+	return nil
+}
+
+// Hello : test connect
+func (e *Userservice) Hello(ctx context.Context, req *proto.HelloRequest, rsp *proto.HelloResponse) error {
+	rsp.Greeting = "Hello " + req.Name
+	return nil
+}
+
+//=======================================================================================//
+func main() {
+	
 
 	// new service ----------------------------------------------
 	service := micro.NewService(
@@ -88,7 +85,6 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
 
 // Createtable trong database neu chua co
 func Createtable(db *pg.DB) {
